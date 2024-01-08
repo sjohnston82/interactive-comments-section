@@ -22,13 +22,6 @@ export async function POST(request: NextRequest) {
     include: {
       user: true,
     },
-    // connect: {
-    //   userId: prisma.user.findFirst({
-    //     where: {
-    //       userId: user.id
-    //     }
-    //   }),
-    // },
   });
 
   const parentComment = await prisma.comment.update({

@@ -8,6 +8,8 @@ import CommentHeader from "./CommentHeader";
 import Score from "./Score";
 import ReplyButton from "./ReplyButton";
 import ReplyContainer from "./ReplyContainer";
+import EditDeleteContainer from "./EditDeleteContainer";
+import HighlightedText from "./HighlightedText";
 
 type CommentProps = {
   comment: Comment;
@@ -33,6 +35,9 @@ const Comment = ({ comment, users }: { comment: Comment; users: Users }) => {
     return 0;
   });
 
+  // pattern to detect @mentions
+  const regex = /(@[a-zA-Z0-9_]+|\s+)/g;
+
   const commentAuthor = users.find((user) => user.id === comment.userId);
 
   return (
@@ -43,8 +48,15 @@ const Comment = ({ comment, users }: { comment: Comment; users: Users }) => {
         )}
         {commentAuthor && (
           <>
-            <CommentHeader user={commentAuthor} createdAt={comment.createdAt} />
-            <p className="">{comment.message}</p>
+            <CommentHeader
+              user={commentAuthor}
+              createdAt={comment.createdAt}
+              userId={comment.userId}
+              currentUser={currentUser}
+            />
+           
+              <HighlightedText text={comment.message} pattern={regex} />
+         
             {windowSize.innerWidth < 768 && (
               <div className="flex justify-between">
                 <Score
@@ -52,13 +64,23 @@ const Comment = ({ comment, users }: { comment: Comment; users: Users }) => {
                   user={currentUser}
                   id={comment.id}
                 />
-                <ReplyButton setReplying={setReplying} />
+                {comment.userId === currentUser ? (
+                  <EditDeleteContainer />
+                ) : (
+                  <ReplyButton setReplying={setReplying} />
+                )}
               </div>
             )}
           </>
         )}
       </div>
-      {replying && <ReplyContainer currentUser={currentUser} parent={comment.id} setReplying={setReplying} />}
+      {replying && (
+        <ReplyContainer
+          currentUser={currentUser}
+          parent={comment.id}
+          setReplying={setReplying}
+        />
+      )}
       <div className="">
         {comment.replies?.length! > 0 && (
           <div className="pl-4 flex flex-col  rounded-lg">
