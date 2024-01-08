@@ -51,7 +51,7 @@ const CommentsList = () => {
   
 
   return (
-    <div className="bg-gray-500 w-[375px] p-5 flex flex-col ">
+    <div className="bg-gray-500  flex flex-col ">
       {sortedComments?.map(
         (comment) =>
           comment.parentId === null && userData &&  (

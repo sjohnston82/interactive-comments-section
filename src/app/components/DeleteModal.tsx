@@ -34,7 +34,6 @@ const DeleteModal = ({ onClose, onDelete }: DeleteModalProps) => {
     router.push("/");
   };
 
-  console.log(commentId);
 
   const { mutate: deleteComment } = useMutation({
     mutationFn: async () => {
