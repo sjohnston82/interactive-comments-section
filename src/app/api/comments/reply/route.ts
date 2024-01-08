@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       message,
       parent: {
         connect: {
-          id: userId,
+          id: parentCommentId,
         },
       },
       user: {
@@ -35,5 +35,5 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  return NextResponse.json({ reply });
+  return NextResponse.json({ reply }, { status: 200 });
 }
